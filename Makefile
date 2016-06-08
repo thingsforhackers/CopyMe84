@@ -2,7 +2,7 @@
 PROJECT = copyme84
 
 ### Source files and search directory
-CSRC    = main.c
+CSRC    = main.c button.c state.c
 ASRC    =
 VPATH   =
 
