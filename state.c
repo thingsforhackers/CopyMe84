@@ -7,7 +7,7 @@
 #include "state.h"
 
 
-void initStateM(StateM* state, SMFunc* handlerFunc, uint32_t currentTime)
+void initStateM(struct StateM* state, SMFunc handlerFunc, uint32_t currentTime)
 {
   state->handlerFunc = handlerFunc;
   state->current = STATE_INVALID;
@@ -15,12 +15,12 @@ void initStateM(StateM* state, SMFunc* handlerFunc, uint32_t currentTime)
   runStateM(state, currentTime);
 }
 
-uint8_t runStateM(StateM* state, uint32_t currentTime)
+uint8_t runStateM(struct StateM* state, uint32_t currentTime)
 {
   uint8_t retVal;
 
   state->next = STATE_INVALID;
-  retVal = state->handlerFunc(state);
+  retVal = state->handlerFunc(state, currentTime);
   state->previous = state->current;
   if( STATE_INVALID !=  state->next)
   {
@@ -29,4 +29,14 @@ uint8_t runStateM(StateM* state, uint32_t currentTime)
     state->enterTime = currentTime;
   }
   return retVal;
+}
+
+uint32_t getStateDuration(struct StateM* state, uint32_t currentTime)
+{
+  return currentTime - state->enterTime;
+}
+
+uint8_t isStateEntered(struct StateM* state)
+{
+  return state->current != state->previous;
 }

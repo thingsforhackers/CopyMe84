@@ -12,21 +12,25 @@
 
 struct StateM;
 
-static const uint8_t STATE_INVALID = 255;
+#define STATE_INVALID 255
 
-typedef void *(SMFunc)(struct StateM* sm);
+typedef uint8_t (*SMFunc)(struct StateM* sm, uint32_t currentTime);
 
-typedef struct
+struct StateM
 {
     uint8_t current;
     uint8_t previous;
     uint8_t next;
     uint32_t enterTime;
-    SMFunc* handlerFunc;
-} StateM;
+    SMFunc handlerFunc;
+};
 
-void initStateM(StateM* state, SMFunc* handlerFunc, uint32_t currentTime);
+void initStateM(struct StateM* state, SMFunc handlerFunc, uint32_t currentTime);
 
-uint8_t runStateM(StateM* state, uint32_t currentTime);
+uint8_t runStateM(struct StateM* state, uint32_t currentTime);
+
+uint32_t getStateDuration(struct StateM* state, uint32_t currentTime);
+
+uint8_t isStateEntered(struct StateM* state);
 
 #endif /* STATE_H_ */
