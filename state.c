@@ -5,36 +5,37 @@
  *      Author: njohn
  */
 #include "state.h"
+#include "tmr.h"
 
 
-void initStateM(struct StateM* state, SMFunc handlerFunc, uint32_t currentTime)
+void initStateM(struct StateM* state, SMFunc handlerFunc)
 {
   state->handlerFunc = handlerFunc;
   state->current = STATE_INVALID;
   state->previous = STATE_INVALID;
-  state->enterTime = currentTime;
-  runStateM(state, currentTime);
+  state->enterTime = millis();
+  runStateM(state);
 }
 
-uint8_t runStateM(struct StateM* state, uint32_t currentTime)
+uint8_t runStateM(struct StateM* state)
 {
   uint8_t retVal;
 
   state->next = STATE_INVALID;
-  retVal = state->handlerFunc(state, currentTime);
+  retVal = state->handlerFunc(state);
   state->previous = state->current;
   if( STATE_INVALID !=  state->next)
   {
     state->previous = state->current;
     state->current = state->next;
-    state->enterTime = currentTime;
+    state->enterTime = millis();
   }
   return retVal;
 }
 
-uint32_t getStateDuration(struct StateM* state, uint32_t currentTime)
+uint32_t getStateDuration(struct StateM* state)
 {
-  return currentTime - state->enterTime;
+  return millis() - state->enterTime;
 }
 
 uint8_t isStateEntered(struct StateM* state)

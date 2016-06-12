@@ -6,8 +6,10 @@
  */
 #include <avr/io.h>
 #include "button.h"
+#include "tmr.h"
 
-static const uint32_t DEBOUNCE_TIME = 20; //ms
+
+static const uint32_t DEBOUNCE_TIME = 50; //ms
 static const uint32_t HOLD_TIME = 2000; //ms
 
 void initButtons(ButtonCtx* ctx, uint8_t count)
@@ -18,7 +20,7 @@ void initButtons(ButtonCtx* ctx, uint8_t count)
   }
 }
 
-void updateButtons(ButtonCtx* buttons, uint8_t count, uint32_t currentTime)
+void updateButtons(ButtonCtx* buttons, uint8_t count)
 {
   for( uint8_t idx = 0; idx < count; idx++)
   {
@@ -30,7 +32,7 @@ void updateButtons(ButtonCtx* buttons, uint8_t count, uint32_t currentTime)
       {
         if(pressed)
         {
-          button->time = currentTime;
+          button->time = millis();
           button->state = BUTTON_PRESSED;
         }
         break;
@@ -44,11 +46,11 @@ void updateButtons(ButtonCtx* buttons, uint8_t count, uint32_t currentTime)
 
       case BUTTON_DEBOUCE:
       {
-          if( (currentTime - button->time) > DEBOUNCE_TIME )
+          if( (millis() - button->time) > DEBOUNCE_TIME )
           {
               if(pressed)
               {
-                  button->time = currentTime;
+                  button->time = millis();
                   button->state = BUTTON_DOWN;
               }
               else
@@ -63,7 +65,7 @@ void updateButtons(ButtonCtx* buttons, uint8_t count, uint32_t currentTime)
       {
           if(pressed)
           {
-              if( (currentTime - button->time) > HOLD_TIME )
+              if( (millis() - button->time) > HOLD_TIME )
               {
                   button->state = BUTTON_HELD;
               }

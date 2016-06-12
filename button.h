@@ -30,7 +30,7 @@ typedef struct
 } ButtonCtx;
 
 void initButtons(ButtonCtx* ctx, uint8_t count);
-void updateButtons(ButtonCtx* ctx, uint8_t count, uint32_t currentTime);
+void updateButtons(ButtonCtx* ctx, uint8_t count);
 
 
 #endif /* BUTTON_H_ */
