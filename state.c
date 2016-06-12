@@ -12,6 +12,7 @@ void initStateM(struct StateM* state, SMFunc handlerFunc, uint32_t currentTime)
   state->handlerFunc = handlerFunc;
   state->current = STATE_INVALID;
   state->previous = STATE_INVALID;
+  state->enterTime = currentTime;
   runStateM(state, currentTime);
 }
 
