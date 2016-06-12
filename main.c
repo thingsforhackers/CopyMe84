@@ -55,7 +55,9 @@ static volatile uint32_t ticksSincePOR; //Power on time in ms. ~49 Days max
 static volatile uint32_t _currentTime;
 static uint8_t currentLevel;
 static uint8_t currentStep;
-#define STEP_DURATION 333
+
+#define MAX_DURATION ((uint32_t)398)
+#define STEP_DURATION ((uint32_t)400)
 #define REPEAT_STEP_TO 5000
 
 uint16_t noteIdx;
@@ -68,7 +70,7 @@ uint32_t volatile toneStopTime;
 
 volatile uint32_t toggle_count;
 
-#define MAX_DURATION ((uint32_t)600)
+
 
 uint16_t noteArray3[] = {
     C4, E4, G4, C5, E5, G4, C5, E5
@@ -235,19 +237,19 @@ static void doIndicateStep(uint8_t step)
 
 void generateSequence()
 {
-//  for(int idx = 0; idx < MAX_LEVEL; idx++)
-//  {
-//    sequence[idx] = (uint8_t)(rand() % INDICATE_CNT);
-//  }
+  for(int idx = 0; idx < MAX_LEVEL; idx++)
+  {
+    sequence[idx] = (uint8_t)(rand() % INDICATE_CNT);
+  }
 
-  sequence[0] = INDICATE_GREEN;
-  sequence[1] = INDICATE_BLUE;
-  sequence[2] = INDICATE_BLUE;
-  sequence[3] = INDICATE_GREEN;
-  sequence[4] = INDICATE_RED;
-  sequence[5] = INDICATE_YELLOW;
-  sequence[6] = INDICATE_GREEN;
-  sequence[7] = INDICATE_RED;
+//  sequence[0] = INDICATE_GREEN;
+//  sequence[1] = INDICATE_BLUE;
+//  sequence[2] = INDICATE_BLUE;
+//  sequence[3] = INDICATE_GREEN;
+//  sequence[4] = INDICATE_RED;
+//  sequence[5] = INDICATE_YELLOW;
+//  sequence[6] = INDICATE_GREEN;
+//  sequence[7] = INDICATE_RED;
 }
 
 #if 1
@@ -373,7 +375,14 @@ static uint8_t mainStateFunc(struct StateM* sm, uint32_t currentTime)
         if(currentStep >= currentLevel)
         {
           //All done, now handle player repeating this level
+#if 0
           sm->next = GAME_STATE_CHECK_SEQUENCE_PAUSE;
+#else
+          currentStep = 0;
+          sm->next = GAME_STATE_CHECK_SEQUENCE;
+//          currentLevel++;
+//          sm->next = GAME_STATE_PLAY_SEQUENCE_INIT;
+#endif
         }
         else
         {
@@ -384,6 +393,7 @@ static uint8_t mainStateFunc(struct StateM* sm, uint32_t currentTime)
       break;
     }
 
+#if 0
     case GAME_STATE_CHECK_SEQUENCE_PAUSE:
     {
       if( getStateDuration(sm, currentTime) > 1000 )
@@ -393,6 +403,7 @@ static uint8_t mainStateFunc(struct StateM* sm, uint32_t currentTime)
       }
       break;
     }
+#endif
 
     case GAME_STATE_CHECK_SEQUENCE:
     {
