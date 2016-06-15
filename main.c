@@ -103,12 +103,13 @@ ISR(TIM1_COMPA_vect)
 
 uint8_t isNoteFinished(void)
 {
-  uint32_t m;
-  uint8_t oldSREG = SREG;
-  cli();
-  m = toggle_count;
-  SREG = oldSREG;
-  return m == 0;
+//  uint32_t m;
+//  uint8_t oldSREG = SREG;
+//  cli();
+//  m = toggle_count;
+//  SREG = oldSREG;
+//  return m == 0;
+  return TCCR1B == 0;
 }
 
 // 1MHz clk, preScale 8, /2 for toggle
@@ -322,8 +323,8 @@ static uint8_t mainStateFunc(struct StateM* sm)
       }
       else if(getStateDuration(sm) > 2000)
       {
-        sm->next = GAME_STATE_PRE_GAME;
-        //sm->next = GAME_STATE_TITLE_TUNE_START;
+        //sm->next = GAME_STATE_PRE_GAME;
+        sm->next = GAME_STATE_TITLE_TUNE_START;
       }
       break;
     }
@@ -482,9 +483,17 @@ static uint8_t mainStateFunc(struct StateM* sm)
 
     case GAME_STATE_TITLE_TUNE_PLAY_NOTE:
     {
-      uint16_t noteFreq = pgm_read_word(&(noteArray[noteIdx]));
-      playNote(noteFreq, noteFreq * noteLen / 500);
-      sm->next = GAME_STATE_TITLE_TUNE_HOLD_NOTE;
+      if(getInput() == NO_KEY)
+      {
+        uint16_t noteFreq = pgm_read_word(&(noteArray[noteIdx]));
+        playNote(noteFreq, noteFreq * noteLen / 500);
+        sm->next = GAME_STATE_TITLE_TUNE_HOLD_NOTE;
+      }
+      else
+      {
+        stopNote();
+        sm->next = GAME_STATE_PRE_GAME;
+      }
       break;
     }
 
