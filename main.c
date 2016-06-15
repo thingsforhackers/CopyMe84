@@ -45,7 +45,7 @@ static const uint8_t GREEN_LED = PB2;
 #define NOTE_G5 ((uint16_t)784)
 
 static const uint8_t SPEAKER = PA6;
-#define MAX_LEVEL 8
+#define MAX_LEVEL 64
 static uint8_t sequence[MAX_LEVEL];
 
 
@@ -242,21 +242,12 @@ static void doIndicateStep(uint8_t step)
   }
 }
 
-void generateSequence()
+static void generateSequence(void)
 {
   for(int idx = 0; idx < MAX_LEVEL; idx++)
   {
     sequence[idx] = (uint8_t)(rand() % INDICATE_CNT);
   }
-
-//  sequence[0] = INDICATE_GREEN;
-//  sequence[1] = INDICATE_BLUE;
-//  sequence[2] = INDICATE_BLUE;
-//  sequence[3] = INDICATE_GREEN;
-//  sequence[4] = INDICATE_RED;
-//  sequence[5] = INDICATE_YELLOW;
-//  sequence[6] = INDICATE_GREEN;
-//  sequence[7] = INDICATE_RED;
 }
 
 #if 1
@@ -328,7 +319,6 @@ static uint8_t mainStateFunc(struct StateM* sm)
       if(isStateEntered(sm))
       {
         currentLevel = 1;
-        generateSequence();
       }
       else if(getStateDuration(sm) > 2000)
       {
@@ -343,8 +333,10 @@ static uint8_t mainStateFunc(struct StateM* sm)
       static uint8_t leds = 0;
       if(getInput() != NO_KEY)
       {
-          sm->next = GAME_STATE_PLAY_SEQUENCE_INIT;
-          leds = 0;
+        srand(millis());
+        generateSequence();
+        sm->next = GAME_STATE_PLAY_SEQUENCE_INIT;
+        leds = 0;
       }
       else if(getStateDuration(sm) > 500)
       {
@@ -530,6 +522,7 @@ static uint8_t mainStateFunc(struct StateM* sm)
   return retValue;
 }
 
+#if 0
 //Main task code goes here
 static void runTask()
 {
@@ -563,6 +556,7 @@ static void runTask()
 
   PORTB = leds;
 }
+#endif
 
 int main (void)
 {
