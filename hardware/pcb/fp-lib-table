@@ -1,0 +1,6 @@
+(fp_lib_table
+  (lib (name BatteryHolder2462)(type KiCad)(uri D:\vm-shared\tfh\hardware\Lib\BatteryHolder2462.pretty)(options "")(descr ""))
+  (lib (name SpeakerMCABS-201-RC)(type KiCad)(uri D:\vm-shared\tfh\hardware\Lib\SpeakerMCABS-201-RC.pretty)(options "")(descr ""))
+  (lib (name IHE)(type Legacy)(uri D:\vm-shared\tfh\hardware\iheart-kicad-lib\IHE.mod)(options "")(descr ""))
+  (lib (name "Switch - TS0B22")(type KiCad)(uri "D:\\vm-shared\\tfh\\hardware\\Lib\\Switch - TS0B22.pretty")(options "")(descr ""))
+)
