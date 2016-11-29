@@ -4,4 +4,6 @@
   (lib (name IHE)(type Legacy)(uri D:\vm-shared\tfh\hardware\iheart-kicad-lib\IHE.mod)(options "")(descr ""))
   (lib (name "Switch - TS0B22")(type KiCad)(uri "D:\\vm-shared\\tfh\\hardware\\Lib\\Switch - TS0B22.pretty")(options "")(descr ""))
   (lib (name RuuviTag)(type KiCad)(uri D:\vm-shared\tfh\ruuvi\RuuviTag.pretty)(options "")(descr ""))
+  (lib (name "TFH Batteries")(type KiCad)(uri D:\vm-shared\tfh\KiCad\modules\tfhBatteries.pretty)(options "")(descr ""))
+  (lib (name tfhSwitches)(type KiCad)(uri D:\vm-shared\tfh\KiCad\modules\tfhSwitches.pretty)(options "")(descr ""))
 )

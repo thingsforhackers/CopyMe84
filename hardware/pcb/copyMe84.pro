@@ -1,4 +1,4 @@
-update=05/06/2016 08:55:51
+update=09/07/2016 09:47:04
 version=1
 last_client=kicad
 [pcbnew]
@@ -23,9 +23,21 @@ ModuleOutlineThickness=0.150000000000
 [cvpcb]
 version=1
 NetIExt=net
+[general]
+version=1
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
 [eeschema]
 version=1
-LibDir=
+LibDir=../../../KiCad/library
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -59,15 +71,4 @@ LibName29=valves
 LibName30=D:/vm-shared/tfh/hardware/KiCad-Libraries/symbols/MiscellaneousDevices
 LibName31=D:/vm-shared/tfh/hardware/iheart-kicad-lib/IHE
 LibName32=D:/vm-shared/tfh/hardware/Lib/switch_tactile_-_ts0b22
-[general]
-version=1
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
+LibName33=tfhSwitches
