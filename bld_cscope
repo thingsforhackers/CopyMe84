@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+
+AVR_LIBC=$AVR_PREFIX/avr/include
+
+WD=`pwd`
+
+cd /
+
+echo "Scaning '${AVR_LIBC}' for files"
+
+find $AVR_LIBC					                        	\
+   -name "*.[hxsS]" ! -name "*io*.h" -print >$WD/cscope.files
+
+echo "${AVR_LIBC}/avr/io.h" >> ${WD}/cscope.files
+echo "${AVR_LIBC}/avr/iotn84a.h" >> ${WD}/cscope.files
+
+cd $WD
+
+echo "Scaning '${WD}' for files"
+find . -name "*.[chxsS]" -print >>$WD/cscope.files
+
+echo "Building cscope Dbase"
+
+cscope -bqk
+
+exit 0

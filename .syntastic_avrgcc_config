@@ -1,0 +1,3 @@
+DEVICE=attiny84a
+-mmcu=attiny84a
+
