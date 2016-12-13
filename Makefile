@@ -8,6 +8,7 @@ VPATH   =
 
 ### Target device
 DEVICE  = attiny84a
+CODE_SEG_SIZE = 8192
 
 ### Optimization level (0, 1, 2, 3, 4 or s)
 OPTIMIZE = s
@@ -29,7 +30,7 @@ WARNINGS = all extra
 OBJDIR = obj
 
 ### Output file format (ihex, bin or both) and debugger type
-OUTPUT	= ihex
+OUTPUT	= both
 DEBUG	= dwarf-2
 
 
@@ -106,7 +107,7 @@ version :
 
 %.bin: %.elf
 	@echo
-	$(OBJCOPY) -O binary $< $@
+	$(OBJCOPY) -O binary --pad-to $(CODE_SEG_SIZE) --gap-fill 255 $< $@
 
 # Create extended listing file from ELF output file.
 %.lst: %.elf

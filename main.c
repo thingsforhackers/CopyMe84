@@ -3,12 +3,12 @@
  *
  * Pin assignments
  *
- * Colour		LED			Switch
- * ======       ======      =======
- * Red			PB0(2)		PA2(11)
- * Blue			PB1(3)		PA3(10)
- * Yellow		PB3(4)		PA4(9)
- * Green		PB2(5)		PA5(8)
+ * Colour		LED			Switch   PCINT
+ * ======   ======  =======  =====
+ * Red			PB0(2)	PA2(11)  PCINT2
+ * Blue			PB1(3)	PA3(10)  PCINT3
+ * Yellow		PB3(4)	PA4(9)   PCINT4
+ * Green		PB2(5)	PA5(8)   PCINT5
  *
  * 	Speaker: PA6(7)
  */
@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <avr/pgmspace.h> // needed for PROGMEM
 #include <util/delay.h>
+#include <avr/wdt.h>
 #include "button.h"
 #include "state.h"
 #include "tune.h"
@@ -68,8 +69,6 @@ volatile uint32_t toneStopTime;
 
 volatile uint32_t toggle_count;
 
-
-
 uint16_t noteArray3[] = {
     C4, E4, G4, C5, E5, G4, C5, E5
 };
@@ -79,36 +78,29 @@ volatile uint16_t led22;
 
 ISR(TIM1_COMPA_vect)
 {
-#if 1
   if(millis() >= toneStopTime)
   {
     TCCR1B = 0; //Stop Timer1
   }
-#else
-  uint16_t l = led22;
-  l++;
-  led22 = l;
-  PORTB = (l >> 8) & 0x0F;
-
-  if( toggle_count )
-  {
-    toggle_count--;
-  }
-  else
-  {
-    TCCR1B = 0; //Stop Timer1
-  }
-#endif
 }
+
+void enterDeepSleep(void)
+{
+  PCMSK0 |= _BV(PCINT2) | _BV(PCINT3) | _BV(PCINT4) | _BV(PCINT5);
+  GIMSK |= _BV(PCIE0);
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  sleep_enable();
+  sei();
+  sleep_cpu();
+  cli();
+  GIMSK &= ~_BV(PCIE0);
+  wdt_enable(WDTO_15MS);
+  while(1);
+}
+EMPTY_INTERRUPT(PCINT0_vect);
 
 uint8_t isNoteFinished(void)
 {
-//  uint32_t m;
-//  uint8_t oldSREG = SREG;
-//  cli();
-//  m = toggle_count;
-//  SREG = oldSREG;
-//  return m == 0;
   return TCCR1B == 0;
 }
 
@@ -251,7 +243,6 @@ static void generateSequence(void)
   }
 }
 
-#if 1
 static uint8_t getInput()
 {
   uint8_t pressed;
@@ -279,35 +270,6 @@ static uint8_t getInput()
 
   return pressed;
 }
-#else
-static uint8_t getInput()
-{
-  uint8_t pressed;
-
-  if((PINA & _BV(PA2)) == 0)
-  {
-      pressed = INDICATE_RED;
-  }
-  else if((PINA & _BV(PA3)) == 0)
-  {
-      pressed = INDICATE_BLUE;
-  }
-  else if((PINA & _BV(PA4)) == 0)
-  {
-      pressed = INDICATE_YELLOW;
-  }
-  else if((PINA & _BV(PA5)) == 0)
-  {
-      pressed = INDICATE_GREEN;
-  }
-  else
-  {
-    pressed = NO_KEY;
-  }
-
-  return pressed;
-}
-#endif
 
 static uint8_t mainStateFunc(struct StateM* sm)
 {
@@ -510,6 +472,7 @@ static uint8_t mainStateFunc(struct StateM* sm)
         if (noteIdx == TUNE_LENGTH)
         {
           sm->next = GAME_STATE_POR;
+          enterDeepSleep();
         }
         else
         {
@@ -531,44 +494,10 @@ static uint8_t mainStateFunc(struct StateM* sm)
   return retValue;
 }
 
-#if 0
-//Main task code goes here
-static void runTask()
-{
-  uint8_t playerKey = getInput();
-  uint8_t leds = 0;
-
-  if(INDICATE_RED == playerKey)
-  {
-    stopNote();
-    playNote(NOTE_A4, MAX_DURATION);
-    leds = _BV(RED_LED);
-  }
-  else if(INDICATE_BLUE == playerKey)
-  {
-    stopNote();
-    playNote(NOTE_G4, MAX_DURATION);
-    leds = _BV(BLUE_LED);
-  }
-  else if(INDICATE_YELLOW == playerKey)
-  {
-    stopNote();
-    playNote(NOTE_C4, MAX_DURATION);
-    leds = _BV(YELLOW_LED);
-  }
-  else if(INDICATE_GREEN == playerKey)
-  {
-    stopNote();
-    playNote(NOTE_G5, MAX_DURATION);
-    leds = _BV(GREEN_LED);
-  }
-
-  PORTB = leds;
-}
-#endif
-
 int main (void)
 {
+  MCUSR = 0;
+  wdt_disable();
 
   //Setup Pins
   DDRA = _BV(SPEAKER); //Unused as inputs
@@ -588,8 +517,6 @@ int main (void)
 
   sei();
 
-  //PORTB = _BV(RED_LED) | _BV(BLUE_LED) | _BV(YELLOW_LED) | _BV(GREEN_LED);
-
   initButtons(buttons, BUTTON_CNT);
   initStateM(&mainSM, mainStateFunc);
 
@@ -598,7 +525,6 @@ int main (void)
     sleep_mode();
     updateButtons(buttons, BUTTON_CNT);
     runStateM(&mainSM);
-    //runTask();
   }
 
   return 0;
