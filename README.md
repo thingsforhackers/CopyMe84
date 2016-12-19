@@ -10,6 +10,8 @@ A complete kit looks like this:
 
 ![Copy84A](docs/final-preview.jpg)
 
+Please visit [our store](https://thingsforhackers.com/store/) to purchase this kit.
+
 When 1st powered on, i.e. when you insert the battery, it will play a nice('ish) title tune. After one loop of this tune, the game will enter power saving mode, press any button to wake it up.
 
 To start the game, press any button during the title tune. The game play consitst of remember the sequence of LEDs, and pressing the corrosponding buttons in the correct order to repeat the sequence. Each sucessful loop the game will add another step to the sequence. To help, each LED flash is accompanied by a different beeper tone.
