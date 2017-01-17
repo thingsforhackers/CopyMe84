@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:copyMe84-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -59,7 +60,7 @@ F 3 "" H 4000 3950 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D1
+L LED-RESCUE-copyMe84 D1
 U 1 1 5730C94B
 P 7000 3850
 F 0 "D1" H 7000 3950 50  0000 C CNN
@@ -114,7 +115,7 @@ F 3 "" H 8050 3400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D2
+L LED-RESCUE-copyMe84 D2
 U 1 1 5730CD43
 P 7350 3850
 F 0 "D2" H 7350 3950 50  0000 C CNN
@@ -125,7 +126,7 @@ F 3 "" H 7350 3850 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L LED D3
+L LED-RESCUE-copyMe84 D3
 U 1 1 5730CD7A
 P 7700 3850
 F 0 "D3" H 7700 3950 50  0000 C CNN
@@ -136,7 +137,7 @@ F 3 "" H 7700 3850 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L LED D4
+L LED-RESCUE-copyMe84 D4
 U 1 1 5730CDAC
 P 8050 3850
 F 0 "D4" H 8050 3950 50  0000 C CNN
@@ -280,7 +281,7 @@ Wire Wire Line
 Text Label 8750 3250 1    60   ~ 0
 SPEAKER
 $Comp
-L Battery BT1
+L Battery-RESCUE-copyMe84 BT1
 U 1 1 573111F5
 P 2150 3900
 F 0 "BT1" H 2250 3950 50  0000 L CNN

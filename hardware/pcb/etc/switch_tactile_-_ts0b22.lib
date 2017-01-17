@@ -1,0 +1,26 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#
+# Switch_Tactile_-_TS0B22
+#
+DEF Switch_Tactile_-_TS0B22 S 0 40 N Y 1 F N
+F0 "S" 150 -150 60 H V C CNN
+F1 "Switch_Tactile_-_TS0B22" 0 200 60 H V C CNN
+F2 "" 0 0 60 H V C CNN
+F3 "" 0 0 60 H V C CNN
+$FPLIST
+ SW_M6*
+$ENDFPLIST
+DRAW
+P 2 0 1 0  -150 50  -150 -50 N
+P 2 0 1 0  150 -50  150 50 N
+P 2 0 1 0  150 0  50 0 N
+P 3 0 1 0  -150 0  -50 0  50 50 N
+X ~ 1 -250 50 100 R 50 50 1 1 B
+X ~ 2 -250 -50 100 R 50 50 1 1 B
+X ~ 3 250 50 100 L 50 50 1 1 B
+X ~ 4 250 -50 100 L 50 50 1 1 B
+ENDDRAW
+ENDDEF
+#
+#End Library
