@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:copyMe84-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -59,7 +60,7 @@ F 3 "" H 4000 3950 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D1
+L LED-RESCUE-copyMe84 D1
 U 1 1 5730C94B
 P 7000 3850
 F 0 "D1" H 7000 3950 50  0000 C CNN
@@ -114,7 +115,7 @@ F 3 "" H 8050 3400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D2
+L LED-RESCUE-copyMe84 D2
 U 1 1 5730CD43
 P 7350 3850
 F 0 "D2" H 7350 3950 50  0000 C CNN
@@ -125,7 +126,7 @@ F 3 "" H 7350 3850 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L LED D3
+L LED-RESCUE-copyMe84 D3
 U 1 1 5730CD7A
 P 7700 3850
 F 0 "D3" H 7700 3950 50  0000 C CNN
@@ -136,7 +137,7 @@ F 3 "" H 7700 3850 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L LED D4
+L LED-RESCUE-copyMe84 D4
 U 1 1 5730CDAC
 P 8050 3850
 F 0 "D4" H 8050 3950 50  0000 C CNN
@@ -218,10 +219,6 @@ Wire Wire Line
 	5050 4250 6000 4250
 Wire Wire Line
 	5050 4350 6000 4350
-Wire Wire Line
-	5050 4550 6000 4550
-Wire Wire Line
-	5050 4450 6000 4450
 Text Label 5300 4250 0    60   ~ 0
 ledRED
 Text Label 5300 4350 0    60   ~ 0
@@ -280,7 +277,7 @@ Wire Wire Line
 Text Label 8750 3250 1    60   ~ 0
 SPEAKER
 $Comp
-L Battery BT1
+L Battery-RESCUE-copyMe84 BT1
 U 1 1 573111F5
 P 2150 3900
 F 0 "BT1" H 2250 3950 50  0000 L CNN
@@ -312,7 +309,6 @@ $EndComp
 Wire Wire Line
 	2550 4550 2550 4750
 Connection ~ 2550 4550
-NoConn ~ 5050 4050
 NoConn ~ 5050 3450
 NoConn ~ 5050 3350
 $Comp
@@ -403,9 +399,9 @@ Text Label 9350 5050 1    60   ~ 0
 swYELLOW
 Text Label 10450 5050 1    60   ~ 0
 swGREEN
-Text Label 5300 4450 0    60   ~ 0
+Text Label 5300 4050 0    60   ~ 0
 ledGREEN
-Text Label 5300 4550 0    60   ~ 0
+Text Label 5300 4450 0    60   ~ 0
 ledYELLOW
 Text Label 5300 3550 0    60   ~ 0
 swRED
@@ -496,4 +492,8 @@ NoConn ~ 8450 5200
 NoConn ~ 9550 5200
 NoConn ~ 8250 5200
 NoConn ~ 8000 7700
+Wire Wire Line
+	5050 4050 6000 4050
+Wire Wire Line
+	5050 4450 6000 4450
 $EndSCHEMATC

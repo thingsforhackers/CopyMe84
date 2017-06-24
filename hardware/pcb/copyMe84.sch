@@ -219,10 +219,6 @@ Wire Wire Line
 	5050 4250 6000 4250
 Wire Wire Line
 	5050 4350 6000 4350
-Wire Wire Line
-	5050 4550 6000 4550
-Wire Wire Line
-	5050 4450 6000 4450
 Text Label 5300 4250 0    60   ~ 0
 ledRED
 Text Label 5300 4350 0    60   ~ 0
@@ -313,7 +309,6 @@ $EndComp
 Wire Wire Line
 	2550 4550 2550 4750
 Connection ~ 2550 4550
-NoConn ~ 5050 4050
 NoConn ~ 5050 3450
 NoConn ~ 5050 3350
 $Comp
@@ -404,9 +399,9 @@ Text Label 9350 5050 1    60   ~ 0
 swYELLOW
 Text Label 10450 5050 1    60   ~ 0
 swGREEN
-Text Label 5300 4450 0    60   ~ 0
+Text Label 5300 4050 0    60   ~ 0
 ledGREEN
-Text Label 5300 4550 0    60   ~ 0
+Text Label 5300 4450 0    60   ~ 0
 ledYELLOW
 Text Label 5300 3550 0    60   ~ 0
 swRED
@@ -497,4 +492,9 @@ NoConn ~ 8450 5200
 NoConn ~ 9550 5200
 NoConn ~ 8250 5200
 NoConn ~ 8000 7700
+Wire Wire Line
+	5050 4050 6000 4050
+Wire Wire Line
+	5050 4450 6000 4450
+NoConn ~ 5050 4550
 $EndSCHEMATC
