@@ -7,8 +7,8 @@
  * ======   ======  =======  =====
  * Red			PB0(2)	PA2(11)  PCINT2
  * Blue			PB1(3)	PA3(10)  PCINT3
- * Yellow		PB3(4)	PA4(9)   PCINT4
- * Green		PB2(5)	PA5(8)   PCINT5
+ * Yellow		PB2(5)	PA4(9)   PCINT4
+ * Green		PA7(6)	PA5(8)   PCINT5
  *
  * 	Speaker: PA6(7)
  */
@@ -28,8 +28,8 @@
 
 static const uint8_t RED_LED = PB0;
 static const uint8_t BLUE_LED = PB1;
-static const uint8_t YELLOW_LED = PB3;
-static const uint8_t GREEN_LED = PB2;
+static const uint8_t YELLOW_LED = PB2;
+static const uint8_t GREEN_LED = PA7;
 
 #define RED_SWITCH PA2
 #define BLUE_SWITCH PA3
@@ -191,13 +191,15 @@ static ButtonCtx buttons[BUTTON_CNT] =
 static void indicateFail()
 {
   playNote(150, 3000);
-  PORTB = _BV(RED_LED) | _BV(BLUE_LED) | _BV(YELLOW_LED) | _BV(GREEN_LED);
+  PORTB = _BV(RED_LED) | _BV(BLUE_LED) | _BV(YELLOW_LED);
+  PORTA |= _BV(GREEN_LED);
 }
 
 static void stepEnd()
 {
   stopNote();
   PORTB = 0;
+  PORTA = (uint8_t)~(_BV(SPEAKER) | _BV(GREEN_LED)); //Unused pull high as well
 }
 
 static void doIndicateStep(uint8_t step)
@@ -229,7 +231,7 @@ static void doIndicateStep(uint8_t step)
     case INDICATE_GREEN:
     {
       playNote(NOTE_G5, MAX_DURATION);
-      PORTB |= _BV(GREEN_LED);
+      PORTA |= _BV(GREEN_LED);
       break;
     }
   }
@@ -293,20 +295,24 @@ static uint8_t mainStateFunc(struct StateM* sm)
 
     case GAME_STATE_PRE_GAME:
     {
-      static uint8_t leds = 0;
+      static uint8_t ledsA = 0;
+      static uint8_t ledsB = 0;
       if(getInput() != NO_KEY)
       {
         srand(millis());
         generateSequence();
         sm->next = GAME_STATE_PLAY_SEQUENCE_INIT;
-        leds = 0;
+        ledsA = 0;
+        ledsB = 0;
       }
       else if(getStateDuration(sm) > 500)
       {
         sm->enterTime = millis();
-        leds = leds ? 0 : _BV(RED_LED) | _BV(BLUE_LED) | _BV(YELLOW_LED) | _BV(GREEN_LED);
+        ledsA = ledsA ? 0 : _BV(RED_LED) | _BV(BLUE_LED) | _BV(YELLOW_LED);
+        ledsB = ledsB ? 0 : _BV(GREEN_LED);
       }
-      PORTB = leds;
+      PORTA = ledsA;
+      PORTB = ledsB;
       break;
     }
 
@@ -336,14 +342,8 @@ static uint8_t mainStateFunc(struct StateM* sm)
         if(currentStep >= currentLevel)
         {
           //All done, now handle player repeating this level
-#if 0
-          sm->next = GAME_STATE_CHECK_SEQUENCE_PAUSE;
-#else
           currentStep = 0;
           sm->next = GAME_STATE_CHECK_SEQUENCE;
-//          currentLevel++;
-//          sm->next = GAME_STATE_PLAY_SEQUENCE_INIT;
-#endif
         }
         else
         {
@@ -353,18 +353,6 @@ static uint8_t mainStateFunc(struct StateM* sm)
       }
       break;
     }
-
-#if 0
-    case GAME_STATE_CHECK_SEQUENCE_PAUSE:
-    {
-      if( getStateDuration(sm, currentTime) > 1000 )
-      {
-        currentStep = 0;
-        sm->next = GAME_STATE_CHECK_SEQUENCE;
-      }
-      break;
-    }
-#endif
 
     case GAME_STATE_CHECK_SEQUENCE:
     {
@@ -500,9 +488,9 @@ int main (void)
   wdt_disable();
 
   //Setup Pins
-  DDRA = _BV(SPEAKER); //Unused as inputs
-  PORTA = ~(_BV(SPEAKER)); //Unused pull high as well
-  DDRB = _BV(RED_LED) | _BV(BLUE_LED) | _BV(YELLOW_LED) | _BV(GREEN_LED);
+  DDRA = _BV(SPEAKER) | _BV(GREEN_LED); //Unused as inputs
+  PORTA = (uint8_t)~(_BV(SPEAKER) | _BV(GREEN_LED)); //Unused pull high as well
+  DDRB = _BV(RED_LED) | _BV(BLUE_LED) | _BV(YELLOW_LED);
   PORTB = 0;
 
   startTmr();
